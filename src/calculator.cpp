@@ -10,14 +10,14 @@
 bool isNumber(const std::string &s)
 {
     std::istringstream iss(s);
-    Number d;
-    return iss >> d && iss.eof();
+    Number number_data;
+    return iss >> number_data && iss.eof();
 }
 
 bool ReadNumber(Number &result)
 {
 
-    if (result)
+    if (static_cast<bool>(result))
     {
         return true;
     }
@@ -80,7 +80,7 @@ bool RunCalculatorCycle()
             else if (token == "+" || token == "-" || token == "*" ||
                      token == "**" || token == "/" || token == ":")
             {
-                Number num;
+                Number num = 0.;
                 if (!(iss >> num))
                 {
                     std::cerr << "Error: Numeric operand expected" << std::endl;
@@ -152,7 +152,7 @@ bool RunCalculatorCycle()
             }
             else if (token == ":")
             {
-                Number num;
+                Number num=0.;
                 if (!(iss >> num))
                 {
                     std::cerr << "Error: Numeric operand expected" << std::endl;
@@ -162,7 +162,7 @@ bool RunCalculatorCycle()
             }
             else if (token == "+")
             {
-                Number num;
+                Number num = 0.;
                 if (!(iss >> num))
                 {
                     std::cerr << "Error: Numeric operand expected" << std::endl;
@@ -172,7 +172,7 @@ bool RunCalculatorCycle()
             }
             else if (token == "-")
             {
-                Number num;
+                Number num = 0.;
                 if (!(iss >> num))
                 {
                     std::cerr << "Error: Numeric operand expected" << std::endl;
@@ -182,7 +182,7 @@ bool RunCalculatorCycle()
             }
             else if (token == "*")
             {
-                Number num;
+                Number num = 0.;
                 if (!(iss >> num))
                 {
                     std::cerr << "Error: Numeric operand expected" << std::endl;
@@ -192,7 +192,7 @@ bool RunCalculatorCycle()
             }
             else if (token == "**")
             {
-                Number num;
+                Number num = 0.;
                 if (!(iss >> num))
                 {
                     std::cerr << "Error: Numeric operand expected" << std::endl;
@@ -202,7 +202,7 @@ bool RunCalculatorCycle()
             }
             else if (token == "/")
             {
-                Number num;
+                Number num = 0.;
                 if (!(iss >> num))
                 {
                     std::cerr << "Error: Numeric operand expected" << std::endl;
