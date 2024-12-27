@@ -2,10 +2,7 @@
 #include "mainwindow.h"
 #include "calculator.h"
 #include "ui_mainwindow.h"
-
-#include <QDebug>
 #include <QString>
-#include <iostream>
 #include <QRegularExpression>
 
 MainWindow::MainWindow(QWidget* parent)
@@ -34,14 +31,12 @@ void MainWindow::connectButtons() {
     connect(ui->btn_7, &QPushButton::clicked, this, [this]() { appendNumber("7"); });
     connect(ui->btn_8, &QPushButton::clicked, this, [this]() { appendNumber("8"); });
     connect(ui->btn_9, &QPushButton::clicked, this, [this]() { appendNumber("9"); });
-
     connect(ui->btn_plus, &QPushButton::clicked, this, [this]() { setOperation(Operation::ADDITION); });
     connect(ui->btn_minus, &QPushButton::clicked, this, [this]() { setOperation(Operation::SUBTRACTION); });
     connect(ui->btn_multiply, &QPushButton::clicked, this, [this]() { setOperation(Operation::MULTIPLICATION); });
     connect(ui->btn_divide, &QPushButton::clicked, this, [this]() { setOperation(Operation::DIVISION); });
     connect(ui->btn_power, &QPushButton::clicked, this, [this]() { setOperation(Operation::POWER); });
     connect(ui->btn_plus_minus, &QPushButton::clicked, this, &MainWindow::toggleSign);
-
     connect(ui->btn_equals, &QPushButton::clicked, this, &MainWindow::calculateResult);
     connect(ui->btn_clear, &QPushButton::clicked, this, &MainWindow::clearCalculator);
     connect(ui->btn_memory_save, &QPushButton::clicked, this, &MainWindow::saveToMemory);
@@ -56,7 +51,6 @@ void MainWindow::appendNumber(const QString& number) {
         input_number_ += number;
     }
     active_number_ = input_number_.toDouble();
-    qDebug() << "Active number updated to:" << active_number_;
     updateDisplay();
 }
 
@@ -80,14 +74,13 @@ void MainWindow::toggleSign() {
     } else {
         active_number_ = -active_number_;
     }
-
     updateDisplay();
 }
 
 void MainWindow::calculateResult() {
     if (current_operation_ == Operation::NO_OPERATION) return;
 
-    QString formula = QString::number(static_cast<double>(calculator_.GetNumber())) + " "; // Приводим к double
+    QString formula = QString::number(static_cast<double>(calculator_.GetNumber())) + " ";
     switch (current_operation_) {
         case Operation::ADDITION:
             calculator_.Add(active_number_);
@@ -97,7 +90,7 @@ void MainWindow::calculateResult() {
             calculator_.Sub(active_number_);
             formula += "− ";
             break;
-        case Operation::MULTIPLICATION: // Добавлено двоеточие
+        case Operation::MULTIPLICATION:
             calculator_.Mul(active_number_);
             formula += "× ";
             break;
@@ -113,14 +106,11 @@ void MainWindow::calculateResult() {
             break;
     }
 
-    formula += QString::number(static_cast<double>(active_number_)) + " ="; 
+    formula += QString::number(static_cast<double>(active_number_)) + " =";
     ui->l_formula->setText(formula);
 
     active_number_ = calculator_.GetNumber();
-
     input_number_.clear();
-
-    qDebug() << "Current result: " << active_number_;
     updateDisplay();
     current_operation_ = Operation::NO_OPERATION;
 }
@@ -162,8 +152,6 @@ void MainWindow::updateDisplay() {
         result.remove(QRegularExpression("\\.$"));
         ui->l_result->setText(result);
     }
-
-    qDebug() << "Display updated with:" << ui->l_result->text();
 }
 
 void MainWindow::updateFormulaDisplay() {
@@ -175,7 +163,7 @@ void MainWindow::updateFormulaDisplay() {
         case Operation::SUBTRACTION:
             operation = "−";
             break;
-        case Operation::MULTIPLICATION: 
+        case Operation::MULTIPLICATION:
             operation = "×";
             break;
         case Operation::DIVISION:
@@ -185,8 +173,8 @@ void MainWindow::updateFormulaDisplay() {
             operation = "^";
             break;
         default:
-            operation = "";
             break;
     }
-    ui->l_formula->setText(QString::number(static_cast<double>(calculator_.GetNumber())) + " " + operation); // Преобразуем Number в double
+   
+    ui->l_formula->setText(QString::number(static_cast<double>(calculator_.GetNumber())) + " " + operation);
 }
