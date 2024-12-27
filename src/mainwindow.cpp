@@ -1,3 +1,4 @@
+// mainwindow.cpp
 #include "mainwindow.h"
 #include "calculator.h"
 #include "ui_mainwindow.h"
@@ -55,6 +56,7 @@ void MainWindow::appendNumber(const QString& number) {
         input_number_ += number;
     }
     active_number_ = input_number_.toDouble();
+    qDebug() << "Active number updated to:" << active_number_;
     updateDisplay();
 }
 
@@ -70,9 +72,9 @@ void MainWindow::setOperation(Operation operation) {
 void MainWindow::toggleSign() {
     if (!input_number_.isEmpty()) {
         if (input_number_[0] == '-') {
-            input_number_.remove(0, 1); // Убираем минус
+            input_number_.remove(0, 1);
         } else {
-            input_number_.prepend('-'); // Добавляем минус
+            input_number_.prepend('-');
         }
         active_number_ = input_number_.toDouble();
     } else {
@@ -82,11 +84,10 @@ void MainWindow::toggleSign() {
     updateDisplay();
 }
 
-
 void MainWindow::calculateResult() {
     if (current_operation_ == Operation::NO_OPERATION) return;
 
-    QString formula = QString::number(static_cast<Number>(calculator_.GetNumber())) + " ";
+    QString formula = QString::number(static_cast<double>(calculator_.GetNumber())) + " "; // Приводим к double
     switch (current_operation_) {
         case Operation::ADDITION:
             calculator_.Add(active_number_);
@@ -96,7 +97,7 @@ void MainWindow::calculateResult() {
             calculator_.Sub(active_number_);
             formula += "− ";
             break;
-        case Operation::MULTIPLICATION:
+        case Operation::MULTIPLICATION: // Добавлено двоеточие
             calculator_.Mul(active_number_);
             formula += "× ";
             break;
@@ -112,13 +113,14 @@ void MainWindow::calculateResult() {
             break;
     }
 
-    formula += QString::number(active_number_) + " =";
+    formula += QString::number(static_cast<double>(active_number_)) + " ="; 
     ui->l_formula->setText(formula);
 
     active_number_ = calculator_.GetNumber();
 
     input_number_.clear();
 
+    qDebug() << "Current result: " << active_number_;
     updateDisplay();
     current_operation_ = Operation::NO_OPERATION;
 }
@@ -152,13 +154,12 @@ void MainWindow::clearCalculator() {
 }
 
 void MainWindow::updateDisplay() {
-
     if (active_number_ == static_cast<int>(active_number_)) {
         ui->l_result->setText(QString::number(static_cast<int>(active_number_)));
     } else {
         QString result = QString::number(active_number_, 'f', 6);
-        result.remove(QRegularExpression("0+$")); // Удаляем нули в конце
-        result.remove(QRegularExpression("\\.$")); // Удаляем точку, если она осталась в конце
+        result.remove(QRegularExpression("0+$"));
+        result.remove(QRegularExpression("\\.$"));
         ui->l_result->setText(result);
     }
 
@@ -174,7 +175,7 @@ void MainWindow::updateFormulaDisplay() {
         case Operation::SUBTRACTION:
             operation = "−";
             break;
-        case Operation::MULTIPLICATION:
+        case Operation::MULTIPLICATION: 
             operation = "×";
             break;
         case Operation::DIVISION:
@@ -184,7 +185,8 @@ void MainWindow::updateFormulaDisplay() {
             operation = "^";
             break;
         default:
+            operation = "";
             break;
     }
-    ui->l_formula->setText(QString::number(calculator_.GetNumber()) + " " + operation);
+    ui->l_formula->setText(QString::number(static_cast<double>(calculator_.GetNumber())) + " " + operation); // Преобразуем Number в double
 }

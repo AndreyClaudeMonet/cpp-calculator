@@ -8,12 +8,12 @@ namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 enum class Operation {
-    NO_OPERATION,
-    ADDITION,
-    SUBTRACTION,
-    MULTIPLICATION,
-    DIVISION,
-    POWER
+    NO_OPERATION,       // Операция не задана
+    ADDITION,           // Сложение
+    SUBTRACTION,        // Вычитание
+    MULTIPLICATION,     // Умножение
+    DIVISION,           // Деление
+    POWER               // Возведение в степень
 };
 
 class MainWindow : public QMainWindow {
