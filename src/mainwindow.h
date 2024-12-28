@@ -43,5 +43,5 @@ private:
     QString input_number_;
     Number active_number_ = 0.0;
     Number memory_cell_ = 0.0;
-    bool memory_saved_ = 0.0;
+    bool memory_saved_ = false;
 };

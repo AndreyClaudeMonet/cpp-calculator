@@ -1,7 +1,7 @@
 // calculator.h
 #pragma once
 #include <string>
-using Number = long double;
+using Number = double;
 
 class Calculator {
 public:

@@ -176,5 +176,5 @@ void MainWindow::updateFormulaDisplay() {
             break;
     }
    
-    ui->l_formula->setText(QString::number(static_cast<double>(calculator_.GetNumber())) + " " + operation);
+    ui->l_formula->setText(QString::number(static_cast<Number>(calculator_.GetNumber())) + " " + operation);
 }
